@@ -15,7 +15,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-        backgroundColor:  Colors.red,
+        backgroundColor:  Color(0xFF2057AB),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
                           width: 350,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color:  Colors.red,
+                            color:  Color(0xFF2057AB),
                             borderRadius: BorderRadius.circular(22),
                           ),
                           child: Row(
