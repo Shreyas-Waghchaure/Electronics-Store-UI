@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -13,8 +15,17 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Electronics Store',style: TextStyle(color: Color(0xFF2057AB),fontWeight: FontWeight.w500,fontSize: 22),),
+        title: Text(
+          'Electronics Store',
+          style: TextStyle(color: Color(0xFF2057AB), fontWeight: FontWeight.w500, fontSize: 22),
+        ),
         centerTitle: true,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('Signout'),
+          onPressed: () => FirebaseAuth.instance.signOut(),
+        ),
       ),
     );
   }

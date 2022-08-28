@@ -1,7 +1,13 @@
+import 'package:electricalstore/Screens/HomePage.dart';
 import 'package:electricalstore/Screens/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -29,13 +35,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2057AB),
+      backgroundColor: const Color(0xFF2057AB),
       body: Column(
         children: [
           Container(
             margin: const EdgeInsets.only(top: 150),
             child: const Center(
-                child:  Image(
+                child: Image(
               image: AssetImage('assets/Store_Logo.png'),
               width: 95,
               height: 95,
@@ -63,38 +69,46 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          const SizedBox(height: 35,),
+          const SizedBox(
+            height: 35,
+          ),
           Container(
             width: 230,
-            child: const Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore',
+            child: const Text(
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 13,
-
               ),
             ),
           ),
-          const SizedBox(height: 60,),
+          const SizedBox(
+            height: 60,
+          ),
           GestureDetector(
-            onTap:(){
-              print('button clicked');
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Login() ));
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>StreamBuilder <User?>(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, snapshot) {
+                    if(snapshot.hasData){
+                      return HomePage();
+                    }else{
+                      return Login();
+                    }
+                  })));
+
             },
             child: Container(
-              
-              height: 73,
-              width: 73,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(55),
-
-              ),
-              child:const Image(
-                image: AssetImage('assets/Arrow.jpg'),
-
-              )
-            ),
+                height: 73,
+                width: 73,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(55),
+                ),
+                child: const Image(
+                  image: AssetImage('assets/Arrow.jpg'),
+                )),
           ),
         ],
       ),

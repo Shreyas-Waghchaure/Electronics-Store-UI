@@ -1,5 +1,6 @@
 import 'package:electricalstore/Screens/HomePage.dart';
 import 'package:electricalstore/Screens/Register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -11,6 +12,15 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool passvisibal = true;
+  final emailcontroller = TextEditingController();
+  final passwordcontroller = TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailcontroller.dispose();
+    passwordcontroller.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +75,7 @@ class _LoginState extends State<Login> {
                       padding: const EdgeInsets.only(left: 25, right: 25),
                       height: 49,
                       child: TextField(
+                        controller: emailcontroller,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(22.0), borderSide: BorderSide.none),
                           fillColor: const Color(0xFFECECEC),
@@ -89,6 +100,7 @@ class _LoginState extends State<Login> {
                       height: 49,
                       alignment: Alignment.center,
                       child: TextField(
+                        controller: passwordcontroller,
                         obscureText: passvisibal,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(22.0), borderSide: BorderSide.none),
@@ -103,7 +115,7 @@ class _LoginState extends State<Login> {
                               }
                             });
 
-                          },icon: Icon(passvisibal == true ? Icons.remove_red_eye:Icons.password),
+                          },icon: Icon(passvisibal == true ? Icons.visibility:Icons.visibility_off),
                           ),
                         ),
                       ),
@@ -127,10 +139,7 @@ class _LoginState extends State<Login> {
                       height: 20,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
-                        print('Sign in');
-                      },
+                      onTap:  signIn,
                       child: Center(
                         child: Container(
                           height: 53,
@@ -166,10 +175,7 @@ class _LoginState extends State<Login> {
                     ),
                     Center(
                       child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
-                          print('clicked');
-                          },
+                        onTap:(){},
                         child: Container(
                           height: 53,
                           width: 350,
@@ -193,5 +199,11 @@ class _LoginState extends State<Login> {
             ],
           ),
         ));
+  }
+  Future signIn() async{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailcontroller.text ,
+        password: passwordcontroller.text
+    );
   }
 }
